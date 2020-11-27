@@ -1,3 +1,10 @@
+import java.text.ParseException;
+import java.util.TimeZone;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.io.FileWriter;
+import java.io.IOException;
 public class Vehiculo
 {
     //Atributos
@@ -7,21 +14,26 @@ public class Vehiculo
     private String marca;
     private String color;
     private int valorComercial;
-    
+    private String date;
+    private Date fecha;
+    private String tipoVehiculo;
     //Métodos
     public Vehiculo(){
     }
 
-    public Vehiculo(String p, String m, String c){
+    public Vehiculo(String p, String m, String c, String d, String t){
         //Vehiculo Vehiculo= new Vehiculo(p,m,c,30000000);
-        this(p,m,c,30000000);
+        this(p,m,c,d,t,30000000);
     }
 
-    public Vehiculo(String p, String m, String c, int v){
+    public Vehiculo(String p, String m, String c, String d, String t,int v ){
         this.placa=p;
         this.marca=m;
         this.color=c;
+        this.date=d;
         this.valorComercial=v;
+        this.fecha=new Date();
+        this.tipoVehiculo=t;
         this.cantidad=cantidad+1;
     }
 
@@ -41,6 +53,10 @@ public class Vehiculo
         return this.valorComercial;
     }
 
+    public Date getFecha(){
+        return this.fecha;
+    }
+
     public void setPlaca(String p){
         this.placa=p;
     }
@@ -57,8 +73,24 @@ public class Vehiculo
         this.valorComercial=v;
     }
 
+    public String gettipoVehiculo(){
+        return this.tipoVehiculo;
+    }
+
+    public void settipovehiculo(String t){
+        this.tipoVehiculo=t;
+    }
+
+    public void setDate(String d){
+        this.date=d;
+    }
+
+    public String getDate(){
+        return this.date;
+    }
+
     public String toString(){
-        return "placa: "+ this.placa+", marca: "+this.marca+", color: "+this.color+", valor comercial: "+this.valorComercial;
+        return "placa: "+ this.placa+", marca: "+this.marca+", color: "+this.color+", valor comercial: "+this.valorComercial+"Fecha de ingreso: "+this.date+"Tipo de vehiculo: "+this.tipoVehiculo; 
     }
 
     public static String toStringVehiculos(){
@@ -66,6 +98,8 @@ public class Vehiculo
         String marca;
         String color;
         int valorComercial;
+        String date;
+        String tipoVehiculo;
         String mensaje="";
         // Creando cadena con la información de todos los vehiculos
         for(int i=0; i<vehiculos.length; i++){
@@ -74,7 +108,9 @@ public class Vehiculo
                 marca=vehiculos[i].getMarca();
                 color=vehiculos[i].getColor();
                 valorComercial=vehiculos[i].getValorComercial();
-                mensaje=mensaje+"Vehiculo "+i+":(placa: "+placa+", marca: "+marca+", color: "+color+", valor comercial: "+valorComercial+") ";
+                tipoVehiculo=vehiculos[i].gettipoVehiculo();
+                date=vehiculos[i].getDate();
+                mensaje=mensaje+"Vehiculo "+i+":(placa: "+placa+", marca: "+marca+", color: "+color+", valor comercial: "+valorComercial+"Fecha de ingreso: "+date+"Tipo de vehiculo: "+tipoVehiculo+")";
             }
         }
         return mensaje;
@@ -83,7 +119,7 @@ public class Vehiculo
     public static int cantidadVehiculo(){
         return cantidad;
     }
-    
+
     public static String colorVehiculo(String colorV){
         String placa;
         String marca;
@@ -102,7 +138,7 @@ public class Vehiculo
         }
         return mensaje;
     }
-    
+
     public static String valorComercialV(){
         // Creando arreglo de vehiculos
         Vehiculo[] vehiculosValor = new Vehiculo[vehiculos.length];
@@ -117,7 +153,7 @@ public class Vehiculo
             posMinimo = i;
             for (int j = i+1; j < vehiculosValor.length; j++){
                 if (vehiculosValor[j] != null && vehiculosValor[posMinimo] != null && vehiculosValor[j].getValorComercial() < vehiculosValor[posMinimo].getValorComercial()){
-                   posMinimo = j; 
+                    posMinimo = j; 
                 }
             }
             temporal = vehiculosValor[i];
@@ -140,5 +176,31 @@ public class Vehiculo
             }
         }
         return mensaje;
+    }
+
+    public static void escribeArchivo()throws IOException{
+        String placa;
+        String marca;
+        String color;
+        int valorComercial;
+        String date;
+        String tipoVehiculo;
+        String mensaje="";
+        FileWriter writer=new FileWriter("D:\\Vehiculos.txt");
+        for(int i=0; i<vehiculos.length;i++){
+            if(vehiculos[i]!=null){
+                placa=vehiculos[i].getPlaca();
+                marca=vehiculos[i].getMarca();
+                color=vehiculos[i].getColor();
+                valorComercial=vehiculos[i].getValorComercial();
+                tipoVehiculo=vehiculos[i].gettipoVehiculo();
+                date=vehiculos[i].getDate();
+                mensaje=mensaje+"Vehiculo "+i+":(placa: "+placa+", marca: "+marca+", color: "+color+", valor comercial: "+valorComercial+"Fecha de ingreso: "+date+"Tipo de vehiculo: "+tipoVehiculo+")";
+            }
+        }
+        System.out.println(mensaje);
+        writer.write(mensaje);
+        writer.flush();
+        writer.close();
     }
 }
