@@ -88,51 +88,40 @@ public class Principal
                 break;
                 case 3:
                 System.out.println("¿En cuál espacio deseas parquear?");
-                espacioParqueo = scan.nextInt();
+                int espacioParqueo2 = scan.nextInt();
+                System.out.println(espacioParqueo2);
                 System.out.println("Ingrese el numero 1 si esta en un carro, de lo contrario un 2 para una moto: ");
-                tipoVehiculo=0;
-                while (espacioParqueo >= espacios || espacioParqueo < 0){
-                    System.out.println("¿En cuál espacio deseas parquear?");
-                    espacioParqueo = scan.nextInt();
+                int tipoVehiculo2=scan.nextInt();
+                String tipoVehiculoString2="Moto";
+                //Validación tipo vehiculo es permitido.
+                if(tipoVehiculo2 > 2 && tipoVehiculo2<=1){
+                    System.out.println("El tipo de vehiculo registrado no esta disponible");
+                    break;
+                }else 
+                if(tipoVehiculo2==1){
+                    tipoVehiculoString="Carro";
                 }
-                if (Sensor.sensores[espacioParqueo].getEstado() == 0){
-                    if(tipoVehiculo==1){
-                        String placa, marca, color,tipo;
-                        int valor;
-                        System.out.println("Ingrese la placa: ");
-                        placa = scan.next();
-                        System.out.println("Ingrese la marca: ");
-                        marca = scan.next();
-                        System.out.println("Ingrese el color: ");
-                        color = scan.next();
-                        System.out.println("Ingrese el valor comercial: ");
-                        valor = scan.nextInt();
-                        String fecha=hourdateFormat.format(date);
+                //Buscar espacio
+                if (Sensor.buscarVehiculo(espacioParqueo2) == 0){
+                    String placa, marca, color,tipo;
+                    int valor;
+                    System.out.println("Ingrese la placa: ");
+                    placa = scan.next();
+                    System.out.println("Ingrese la marca: ");
+                    marca = scan.next();
+                    System.out.println("Ingrese el color: ");
+                    color = scan.next();
+                    System.out.println("Ingrese el valor: ");
+                    valor=scan.nextInt();
+                    String fecha=hourdateFormat.format(date);
 
-                        Vehiculo vehiculoNuevo = new Vehiculo(placa, marca, color,fecha,"Carro",valor);
-                        Vehiculo.vehiculos[espacioParqueo] = vehiculoNuevo;
-                        Sensor.sensores[espacioParqueo].setEstado(1);
-                        System.out.println(vehiculoNuevo.toString());
-                    }else if(tipoVehiculo==2){
-                        String placa, marca, color,tipo;
-                        int valor;
-                        System.out.println("Ingrese la placa: ");
-                        placa = scan.next();
-                        System.out.println("Ingrese la marca: ");
-                        marca = scan.next();
-                        System.out.println("Ingrese el color: ");
-                        color = scan.next();
-                        System.out.println("Ingrese el valor comercial: ");
-                        valor = scan.nextInt();
-                        String fecha=hourdateFormat.format(date);
-
-                        Vehiculo vehiculoNuevo = new Vehiculo(placa, marca, color,fecha,"Moto",valor);
-                        Vehiculo.vehiculos[espacioParqueo] = vehiculoNuevo;
-                        Sensor.sensores[espacioParqueo].setEstado(1);
-                        System.out.println(vehiculoNuevo.toString());
-                    }
+                    Vehiculo vehiculoNuevo = new Vehiculo(placa, marca, color,fecha,tipoVehiculoString2,valor);
+                    Vehiculo.vehiculos[espacioParqueo2] = vehiculoNuevo;
+                    System.out.println(""+placa);
+                    Sensor.sensores[espacioParqueo2].setEstado(1);
+                    System.out.println(vehiculoNuevo.toString());
                 } else {
-                    System.out.println("El espacio "+espacioParqueo+" se encuentra ocupado");
+                    System.out.println("El espacio "+espacioParqueo2+" se encuentra ocupado");
                 }
                 break;
                 case 4:
@@ -173,7 +162,7 @@ public class Principal
                     String fechaf=hourdateFormat.format(fecha);
                     Date primeraFecha=Vehiculo.vehiculos[espacio].getFecha();
                     double primerTiempo=primeraFecha.getTime();
-                    double tiempo=(fecha.getTime()-primerTiempo)/3600000;
+                    double tiempo=(fecha.getTime()-primerTiempo)/3600;
                     double total;
                     if (Vehiculo.vehiculos[espacio].gettipoVehiculo().equals("Carro")){
                         total=tiempo*precioCarro;
